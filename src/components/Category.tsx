@@ -30,7 +30,11 @@ const List = styled.div`
   display: flex;
   justify-content: center;
   margin: 2rem 0rem;
-  gap: 2rem;
+  gap: 0.2rem;
+
+  @media (min-width: 720px) {
+    gap: 2rem;
+  }
 `;
 
 const SLink = styled(NavLink)`
@@ -45,7 +49,7 @@ const SLink = styled(NavLink)`
   height: 6rem;
   cursor: pointer;
 
-  transform: scale(0.8);
+  transform: scale(0.9);
 
   h4 {
     color: white;
@@ -67,6 +71,10 @@ const SLink = styled(NavLink)`
     h4 {
       color: white;
     }
+  }
+
+  @media (min-width: 720px) {
+    transform: scale(0.8);
   }
 `;
 

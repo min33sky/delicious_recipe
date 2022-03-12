@@ -14,12 +14,8 @@ function Veggie() {
       const veggie = localStorage.getItem('veggie_recipes');
 
       if (veggie !== null) {
-        console.log('*** 로컬 스토리지 값으로 초기화 ***');
-        setVeggie(JSON.parse(veggie));
-        return;
+        return setVeggie(JSON.parse(veggie));
       }
-
-      console.log('*** 로컬 스토리지가 비어있으므로 API 호출 ***');
 
       const { data } = await axios.get<IRandomRecipesResponse>(
         `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`

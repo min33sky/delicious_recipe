@@ -13,13 +13,10 @@ function Cuisine() {
     if (params.type) {
       const localData = localStorage.getItem(`cousine_${params.type}`);
       if (localData !== null) {
-        console.log(params.type + ' 데이터를 로컬스토리지에서 가져옵니다. ');
         return setCousine(JSON.parse(localData));
       }
 
       const getPopular = async () => {
-        console.log('*** 로컬 스토리지가 비어있으므로 API 호출 ***');
-
         const { data } = await axios.get<IFetchCategoryResponse>(
           `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${params.type}`
         );
@@ -31,8 +28,6 @@ function Cuisine() {
       getPopular();
     }
   }, [params.type]);
-
-  console.log(cousine);
 
   return (
     <Grid

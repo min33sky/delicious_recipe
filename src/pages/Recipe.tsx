@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,7 +32,12 @@ function Recipe() {
   }, [params.name]);
 
   return (
-    <DetailWrapper>
+    <DetailWrapper
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div>
         <h2>{recipeDetail?.title}</h2>
         <img src={recipeDetail?.image} alt={recipeDetail?.title} />
@@ -49,41 +55,71 @@ function Recipe() {
         >
           Ingredients
         </Button>
-        {activeTab === 'instructions' && (
-          <div>
-            <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.summary || '' }}></h3>
-            <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.instructions || '' }}></h3>
-          </div>
-        )}
-        {activeTab === 'ingredients' && (
-          <ul>
-            {recipeDetail?.extendedIngredients.map((item) => (
-              <li key={item.id}>{item.original}</li>
-            ))}
-          </ul>
-        )}
+
+        <AnimatePresence exitBeforeEnter>
+          {activeTab === 'instructions' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.summary || '' }}></h3>
+              <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.instructions || '' }}></h3>
+            </motion.div>
+          )}
+          {activeTab === 'ingredients' && (
+            <motion.ul
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {recipeDetail?.extendedIngredients.map((item) => (
+                <li key={item.id}>{item.original}</li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </Info>
     </DetailWrapper>
   );
 }
 
-const DetailWrapper = styled.div`
-  margin-top: 10rem;
+const DetailWrapper = styled(motion.div)`
+  margin-top: 8rem;
   margin-bottom: 5rem;
-  display: flex;
+
+  display: grid;
+  width: 100%;
+  grid-gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 
   .active {
     background: linear-gradient(35deg, #494949, #313131);
     color: white;
   }
 
+  img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
   h3 {
+    font-size: 1rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
   }
 
   li {
     font-size: 1.2rem;
     line-height: 2.5rem;
+    margin-left: 1.2rem;
   }
 
   ul {
@@ -96,12 +132,17 @@ const Button = styled.button`
   color: #313131;
   background-color: white;
   border: 2px solid black;
-  margin-right: 2rem;
   font-weight: 600;
+  cursor: pointer;
+
+  /* 첫번째 버튼만 마진을 적용 */
+  &:nth-of-type(1) {
+    margin-right: 1rem;
+  }
 `;
 
 const Info = styled.div`
-  margin-left: 10rem;
+  width: 100%;
 `;
 
 export default Recipe;

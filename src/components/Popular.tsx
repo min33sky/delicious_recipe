@@ -15,12 +15,9 @@ function Popular() {
       const popular = localStorage.getItem('popular_recipes');
 
       if (popular !== null) {
-        console.log('*** 로컬 스토리지 값으로 초기화 ***');
         setPopular(JSON.parse(popular));
         return;
       }
-
-      console.log('*** 로컬 스토리지가 비어있으므로 API 호출 ***');
 
       const { data } = await axios.get<IRandomRecipesResponse>(
         `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`

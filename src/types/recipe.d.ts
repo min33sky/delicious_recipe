@@ -104,3 +104,22 @@ export interface Metric {
   unitShort: string;
   unitLong: string;
 }
+
+// 카테고리 요청 타입
+export interface IFetchCategoryResponse {
+  offset: number;
+  number: number;
+  results: Result[];
+  totalResults: number;
+}
+
+export interface Result {
+  id: number;
+  title: string;
+  calories: number;
+  carbs: string;
+  fat: string;
+  image: string;
+  imageType: string;
+  protein: string;
+}

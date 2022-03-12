@@ -11,8 +11,24 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0% 20%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+h4 {
+  font-size: 1rem;
+  color: rgb(56, 56, 56);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: rgb(56, 56, 56);
+  line-height: 2.5rem;
+}
+
+a {
+  color: rgb(56, 56, 56);
 }

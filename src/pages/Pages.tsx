@@ -1,11 +1,13 @@
+import { Route, Routes } from 'react-router-dom';
+import Cuisine from './Cuisine';
 import Home from './Home';
 
 function Pages() {
   return (
-    <div>
-      <p>Pages</p>
-      <Home />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/cuisine/:type" element={<Cuisine />} />
+    </Routes>
   );
 }
 

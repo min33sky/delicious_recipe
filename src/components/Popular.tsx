@@ -11,7 +11,7 @@ function Popular() {
   useEffect(() => {
     const getPopular = async () => {
       //? 로컬스토리지에 데이터가 있으면 API 호출을 하지 않는다. (API 횟수 제한때문에 ㅠㅠㅠ)
-      const popular = localStorage.getItem('popular');
+      const popular = localStorage.getItem('popular_recipes');
 
       if (popular !== null) {
         console.log('*** 로컬 스토리지 값으로 초기화 ***');
@@ -26,48 +26,46 @@ function Popular() {
       );
       setPopular(data.recipes);
 
-      localStorage.setItem('popular', JSON.stringify(data.recipes));
+      localStorage.setItem('popular_recipes', JSON.stringify(data.recipes));
     };
 
     getPopular();
   }, []);
 
   return (
-    <div>
-      <Wrapper>
-        <h3>Popular Picks</h3>
-        <Splide
-          options={{
-            perPage: 4,
-            arrows: false,
-            pagination: false,
-            drag: 'free',
-            gap: '5rem',
-            breakpoints: {
-              1024: {
-                perPage: 3,
-              },
-              767: {
-                perPage: 2,
-              },
-              640: {
-                perPage: 1,
-              },
+    <Wrapper>
+      <h3>Popular Picks</h3>
+      <Splide
+        options={{
+          perPage: 4,
+          arrows: false,
+          pagination: false,
+          drag: 'free',
+          gap: '5rem',
+          breakpoints: {
+            1280: {
+              perPage: 3,
             },
-          }}
-        >
-          {popular.map((recipe) => (
-            <SplideSlide key={recipe.id}>
-              <Card>
-                <p>{recipe.title}</p>
-                <img src={recipe.image} alt={recipe.title} />
-                <Gradient />
-              </Card>
-            </SplideSlide>
-          ))}
-        </Splide>
-      </Wrapper>
-    </div>
+            1024: {
+              perPage: 2,
+            },
+            767: {
+              perPage: 1,
+            },
+          },
+        }}
+      >
+        {popular.map((recipe) => (
+          <SplideSlide key={recipe.id}>
+            <Card>
+              <p>{recipe.title}</p>
+              <img src={recipe.image} alt={recipe.title} />
+              <Gradient />
+            </Card>
+          </SplideSlide>
+        ))}
+      </Splide>
+    </Wrapper>
   );
 }
 
@@ -76,14 +74,14 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
+  position: relative;
   min-height: 25rem;
   border-radius: 2rem;
   overflow: hidden;
-  position: relative;
 
   img {
-    border-radius: 2rem;
     position: absolute;
+    border-radius: 2rem;
     left: 0;
     width: 100%;
     height: 100%;
@@ -113,7 +111,7 @@ const Gradient = styled.div`
   width: 100%;
   height: 100%;
   z-index: 3;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6));
 `;
 
 export default Popular;

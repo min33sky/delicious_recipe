@@ -4,6 +4,7 @@ import { IRandomRecipesResponse, Recipe } from 'types/recipe';
 import styled from 'styled-components';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import { Link } from 'react-router-dom';
 
 function Popular() {
   const [popular, setPopular] = useState<Recipe[]>([]);
@@ -58,9 +59,11 @@ function Popular() {
         {popular.map((recipe) => (
           <SplideSlide key={recipe.id}>
             <Card>
-              <p>{recipe.title}</p>
-              <img src={recipe.image} alt={recipe.title} />
-              <Gradient />
+              <Link to={`/recipe/${recipe.id}`}>
+                <p>{recipe.title}</p>
+                <img src={recipe.image} alt={recipe.title} />
+                <Gradient />
+              </Link>
             </Card>
           </SplideSlide>
         ))}

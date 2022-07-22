@@ -3,6 +3,9 @@ import { GiNoodles, GiChopsticks } from 'react-icons/gi';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+/**
+ * ## 카테고리 컴포넌트
+ */
 function Category() {
   return (
     <List>
@@ -26,7 +29,7 @@ function Category() {
   );
 }
 
-const List = styled.div`
+const List = styled.nav`
   display: flex;
   justify-content: center;
   margin: 2rem 0rem;
@@ -42,7 +45,8 @@ const SLink = styled(NavLink)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  border-radius: 100vmin;
+
   text-decoration: none;
   background: linear-gradient(35deg, #494949, #313131);
   width: 6rem;
@@ -54,13 +58,25 @@ const SLink = styled(NavLink)`
   h4 {
     color: white;
     font-size: 0.8rem;
+    transition: all 0.3s;
   }
 
   svg {
     color: white;
     font-size: 1.5rem;
+    transition: all 0.3s;
   }
 
+  &:hover {
+    svg {
+      color: tomato;
+    }
+    h4 {
+      color: tomato;
+    }
+  }
+
+  //? NavLink 사용 시 URL과 일치할 경우 active 클래스가 추가됨
   &.active {
     background: linear-gradient(to right, #f27121, #e94057);
 

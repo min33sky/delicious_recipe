@@ -3,6 +3,9 @@ import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+/**
+ * ## 검색창 컴포넌트
+ */
 function Search() {
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
@@ -15,7 +18,11 @@ function Search() {
   return (
     <FormStyle onSubmit={handleSubmit}>
       <FaSearch />
-      <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+      <input
+        type="text"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />
     </FormStyle>
   );
 }

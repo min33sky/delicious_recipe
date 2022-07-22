@@ -8,31 +8,44 @@ import styled from 'styled-components';
 function App() {
   return (
     <>
-      <Nav>
-        <GiKnifeFork></GiKnifeFork>
-        <Logo to={'/'}>Deliciouss</Logo>
-      </Nav>
-      <Search />
-      <Category />
-      <Pages />
+      <Header>
+        <GiKnifeFork />
+        <LogoText to={'/'}>Deliciouss</LogoText>
+      </Header>
+
+      <Wrapper>
+        <Search />
+        <Category />
+        <Pages />
+      </Wrapper>
     </>
   );
 }
 
-const Logo = styled(Link)`
+const Wrapper = styled.div`
+  max-width: 900px;
+  margin: auto;
+  padding: 0 10px;
+`;
+
+const LogoText = styled(Link)`
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: 400;
   font-family: 'Lobster Two', cursive;
 `;
 
-const Nav = styled.nav`
-  padding: 4rem 0rem;
+const Header = styled.header`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  max-width: 1024px;
+  margin: auto;
+  padding: 4rem 1rem;
+  gap: 0.5rem;
+
   svg {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 `;
 

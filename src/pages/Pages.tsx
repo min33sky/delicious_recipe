@@ -5,6 +5,9 @@ import Home from './Home';
 import Recipe from './Recipe';
 import Searched from './Searched';
 
+/**
+ * ## 라우팅 컴포넌트
+ */
 function Pages() {
   const location = useLocation();
 

@@ -1,32 +1,33 @@
+import { fetchCousineRecipes } from 'api/recipes';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IFetchCategoryResponse } from 'types/recipe';
+import { CousineType, COUSINE_TYPE } from 'utils/constants';
 
+/**
+ * ## 지역이나 나라별 음식 컴포넌트
+ */
 function Cuisine() {
-  const params = useParams<{ type: string }>();
+  const params = useParams<{ type: CousineType }>();
   const [cousine, setCousine] = useState<IFetchCategoryResponse>();
 
   useEffect(() => {
-    if (params.type) {
-      const localData = localStorage.getItem(`cousine_${params.type}`);
+    (async () => {
+      if (!params.type) return;
+
+      const localData = localStorage.getItem(COUSINE_TYPE[params.type]);
+
       if (localData !== null) {
         return setCousine(JSON.parse(localData));
       }
 
-      const getPopular = async () => {
-        const { data } = await axios.get<IFetchCategoryResponse>(
-          `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${params.type}`
-        );
-
-        setCousine(data);
-        localStorage.setItem(`cousine_${params.type}`, JSON.stringify(data));
-      };
-
-      getPopular();
-    }
+      const data = await fetchCousineRecipes(params.type);
+      setCousine(data);
+      localStorage.setItem(COUSINE_TYPE[params.type], JSON.stringify(data));
+    })();
   }, [params.type]);
 
   return (

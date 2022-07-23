@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { IFetchCategoryResponse, IRandomRecipesResponse } from 'types/recipe';
+import {
+  IFetchCategoryResponse,
+  IFetchRecipeDetail,
+  IRandomRecipesResponse,
+} from 'types/recipe';
 import { CousineType, FETCH_RECIPES_BASE_URL } from 'utils/constants';
 
 /**
@@ -46,6 +50,19 @@ export async function fetchCousineRecipes(type: CousineType) {
 export async function fetchSearchedRecipes(keyword: string) {
   const { data } = await axios.get<IFetchCategoryResponse>(
     `${FETCH_RECIPES_BASE_URL}/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${keyword}`
+  );
+
+  return data;
+}
+
+/**
+ * ## 레시피 세부 정보를 가져오는 API
+ * @param recipeName 레시피 이름
+ * @returns 레시피 세부 정보
+ */
+export async function fetchRecipeDetail(recipeName: string) {
+  const { data } = await axios.get<IFetchRecipeDetail>(
+    `${FETCH_RECIPES_BASE_URL}/${recipeName}/information?apiKey=${process.env.REACT_APP_API_KEY}`
   );
 
   return data;

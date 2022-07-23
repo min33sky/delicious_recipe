@@ -1,34 +1,33 @@
-import axios from 'axios';
+import { fetchRecipeDetail } from 'api/recipes';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IFetchRecipeDetail } from 'types/recipe';
 
+/**
+ * ## 레시피 컴포넌트
+ */
 function Recipe() {
   const params = useParams<{ name: string }>();
   const [recipeDetail, setRecipeDetail] = useState<IFetchRecipeDetail>();
-  const [activeTab, setActiveTab] = useState<'ingredients' | 'instructions'>('instructions');
+  const [activeTab, setActiveTab] = useState<'ingredients' | 'instructions'>(
+    'instructions'
+  );
 
   useEffect(() => {
-    if (params.name) {
+    (async () => {
+      if (!params.name) return;
       const localData = localStorage.getItem(`${params.name}_detail`);
 
       if (localData !== null) {
         return setRecipeDetail(JSON.parse(localData));
       }
 
-      const getDetail = async () => {
-        const { data } = await axios.get<IFetchRecipeDetail>(
-          `https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`
-        );
-
-        setRecipeDetail(data);
-        localStorage.setItem(`${params.name}_detail`, JSON.stringify(data));
-      };
-
-      getDetail();
-    }
+      const data = await fetchRecipeDetail(params.name);
+      setRecipeDetail(data);
+      localStorage.setItem(`${params.name}_detail`, JSON.stringify(data));
+    })();
   }, [params.name]);
 
   return (
@@ -38,23 +37,26 @@ function Recipe() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div>
+      <header>
         <h2>{recipeDetail?.title}</h2>
         <img src={recipeDetail?.image} alt={recipeDetail?.title} />
-      </div>
+      </header>
+
       <Info>
-        <Button
-          className={activeTab === 'instructions' ? 'active' : ''}
-          onClick={() => setActiveTab('instructions')}
-        >
-          Instructions
-        </Button>
-        <Button
-          className={activeTab === 'ingredients' ? 'active' : ''}
-          onClick={() => setActiveTab('ingredients')}
-        >
-          Ingredients
-        </Button>
+        <div aria-label="Tab">
+          <Button
+            className={activeTab === 'instructions' ? 'active' : ''}
+            onClick={() => setActiveTab('instructions')}
+          >
+            Instructions
+          </Button>
+          <Button
+            className={activeTab === 'ingredients' ? 'active' : ''}
+            onClick={() => setActiveTab('ingredients')}
+          >
+            Ingredients
+          </Button>
+        </div>
 
         <AnimatePresence exitBeforeEnter>
           {activeTab === 'instructions' && (
@@ -64,10 +66,19 @@ function Recipe() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.summary || '' }}></h3>
-              <h3 dangerouslySetInnerHTML={{ __html: recipeDetail?.instructions || '' }}></h3>
+              <h3
+                dangerouslySetInnerHTML={{
+                  __html: recipeDetail?.summary || '',
+                }}
+              ></h3>
+              <h3
+                dangerouslySetInnerHTML={{
+                  __html: recipeDetail?.instructions || '',
+                }}
+              ></h3>
             </motion.div>
           )}
+
           {activeTab === 'ingredients' && (
             <motion.ul
               initial={{ opacity: 0 }}
@@ -141,7 +152,7 @@ const Button = styled.button`
   }
 `;
 
-const Info = styled.div`
+const Info = styled.section`
   width: 100%;
 `;
 

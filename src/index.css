@@ -13,8 +13,6 @@ body {
     rgba(209, 247, 241, 1) 0%,
     rgba(249, 213, 213, 1) 81%
   );
-
-  /* margin: 0% 20%; */
 }
 
 /*  ::-webkit- is for chrome */
@@ -31,8 +29,6 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 99, 71, 0.8);
-  /* background: -webkit-linear-gradient(to right, #00c6ff, #0072ff); */
-  /* background: linear-gradient(to right, #00c6ff, #0072ff); */
   border-radius: 0.3em;
 }
 

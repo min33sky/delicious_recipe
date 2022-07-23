@@ -2,6 +2,9 @@ import Popular from 'components/Popular';
 import Veggie from 'components/Veggie';
 import { motion } from 'framer-motion';
 
+/**
+ * ## 메인 페이지
+ */
 function Home() {
   return (
     <motion.div

@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { IRandomRecipesResponse, Recipe } from 'types/recipe';
+import { Recipe } from 'types/recipe';
 import styled from 'styled-components';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { Link } from 'react-router-dom';
+import { VEGGIE_RECIPES } from 'utils/constants';
+import { fetchVegetarianRecipes } from 'api/recipes';
 
+/**
+ * ## 채식주의자용 레시피 추천 컴포넌트
+ */
 function Veggie() {
   const [veggie, setVeggie] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    const getPopular = async () => {
-      const veggie = localStorage.getItem('veggie_recipes');
+    (async () => {
+      const veggie = localStorage.getItem(VEGGIE_RECIPES);
 
       if (veggie !== null) {
         return setVeggie(JSON.parse(veggie));
       }
 
-      const { data } = await axios.get<IRandomRecipesResponse>(
-        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
-      );
-      setVeggie(data.recipes);
+      const data = await fetchVegetarianRecipes();
+      setVeggie(data);
 
-      localStorage.setItem('veggie_recipes', JSON.stringify(data.recipes));
-    };
-
-    getPopular();
+      localStorage.setItem(VEGGIE_RECIPES, JSON.stringify(data));
+    })();
   }, []);
 
   return (
@@ -36,7 +36,6 @@ function Veggie() {
           perPage: 3,
           arrows: false,
           pagination: false,
-          drag: 'free',
           gap: '5rem',
           breakpoints: {
             1280: {
@@ -64,11 +63,11 @@ function Veggie() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   margin: 4rem 0;
 `;
 
-const Card = styled.div`
+const Card = styled.article`
   position: relative;
   min-height: 25rem;
   border-radius: 2rem;

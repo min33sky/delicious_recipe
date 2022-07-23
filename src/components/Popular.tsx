@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { IRandomRecipesResponse, Recipe } from 'types/recipe';
+import { Recipe } from 'types/recipe';
 import styled from 'styled-components';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { Link } from 'react-router-dom';
 
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import { POPULAR_RECIPES } from 'utils/constants';
+import { fetchPopularRecipes } from 'api/recipes';
+
+/**
+ * ## 인기 레시피 컴포넌트
+ */
 function Popular() {
   const [popular, setPopular] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    const getPopular = async () => {
+    (async () => {
       //? 로컬스토리지에 데이터가 있으면 API 호출을 하지 않는다. (API 횟수 제한때문에 ㅠㅠㅠ)
-      const popular = localStorage.getItem('popular_recipes');
+      const popular = localStorage.getItem(POPULAR_RECIPES);
 
       if (popular !== null) {
+        console.log('이미 존재:)');
         setPopular(JSON.parse(popular));
         return;
       }
 
-      const { data } = await axios.get<IRandomRecipesResponse>(
-        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
-      );
-      setPopular(data.recipes);
-
-      localStorage.setItem('popular_recipes', JSON.stringify(data.recipes));
-    };
-
-    getPopular();
+      const data = await fetchPopularRecipes();
+      setPopular(data);
+      localStorage.setItem(POPULAR_RECIPES, JSON.stringify(data));
+    })();
   }, []);
 
   return (
@@ -38,7 +39,6 @@ function Popular() {
           perPage: 4,
           arrows: false,
           pagination: false,
-          drag: 'free',
           gap: '5rem',
           breakpoints: {
             1280: {
@@ -69,11 +69,11 @@ function Popular() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   margin: 4rem 0;
 `;
 
-const Card = styled.div`
+const Card = styled.article`
   position: relative;
   min-height: 25rem;
   border-radius: 2rem;

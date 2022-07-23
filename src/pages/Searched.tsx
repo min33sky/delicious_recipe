@@ -1,31 +1,30 @@
-import axios from 'axios';
+import { fetchSearchedRecipes } from 'api/recipes';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IFetchCategoryResponse } from 'types/recipe';
 
+/**
+ * ## 검색 결과 컴포넌트
+ */
 function Searched() {
   const params = useParams<{ search: string }>();
   const [searchData, setSearchData] = useState<IFetchCategoryResponse>();
 
   useEffect(() => {
-    if (params.search) {
+    (async () => {
+      if (!params.search) return;
+
       const localData = localStorage.getItem(`keyword_${params.search}`);
+
       if (localData !== null) {
         return setSearchData(JSON.parse(localData));
       }
 
-      const getSearchData = async () => {
-        const { data } = await axios.get<IFetchCategoryResponse>(
-          `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${params.search}`
-        );
-
-        setSearchData(data);
-        localStorage.setItem(`keyword_${params.search}`, JSON.stringify(data));
-      };
-
-      getSearchData();
-    }
+      const data = await fetchSearchedRecipes(params.search);
+      setSearchData(data);
+      localStorage.setItem(`keyword_${params.search}`, JSON.stringify(data));
+    })();
   }, [params.search]);
 
   return (

@@ -37,3 +37,16 @@ export async function fetchCousineRecipes(type: CousineType) {
 
   return data;
 }
+
+/**
+ * ## 해당 키워드에 맞는 검색 결과를 가져오는 API
+ * @param keyword 검색어
+ * @returns 검색 결과를 담은 객체
+ */
+export async function fetchSearchedRecipes(keyword: string) {
+  const { data } = await axios.get<IFetchCategoryResponse>(
+    `${FETCH_RECIPES_BASE_URL}/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${keyword}`
+  );
+
+  return data;
+}

@@ -16,11 +16,9 @@ function Popular() {
 
   useEffect(() => {
     (async () => {
-      //? 로컬스토리지에 데이터가 있으면 API 호출을 하지 않는다. (API 횟수 제한때문에 ㅠㅠㅠ)
       const popular = localStorage.getItem(POPULAR_RECIPES);
 
       if (popular !== null) {
-        console.log('이미 존재:)');
         setPopular(JSON.parse(popular));
         return;
       }

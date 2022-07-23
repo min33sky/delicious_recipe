@@ -1,5 +1,4 @@
 import { fetchCousineRecipes } from 'api/recipes';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
